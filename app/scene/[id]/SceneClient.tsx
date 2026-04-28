@@ -7,16 +7,22 @@ import type { Scene } from "../../lib/scenes";
 
 type SceneClientProps = {
   scene: Scene;
+  revealMode: "all" | "step";
 };
 
 const ANIMATION_SEQUENCE_STORAGE_KEY = "scene:monitor-animation-sequence:v1";
 
-export default function SceneClient({ scene }: SceneClientProps) {
+export default function SceneClient({ scene, revealMode }: SceneClientProps) {
   const router = useRouter();
   const exitTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isExitingRef = useRef(false);
   const [isExiting, setIsExiting] = useState(false);
+  const [visibleTextCount, setVisibleTextCount] = useState(revealMode === "step" ? 0 : 3);
   const [animationSetIndex] = useState(() => {
+    if (typeof window === "undefined") {
+      return 0;
+    }
+
     const rawValue = window.sessionStorage.getItem(ANIMATION_SEQUENCE_STORAGE_KEY);
     const parsed = rawValue ? Number.parseInt(rawValue, 10) : 0;
 
@@ -41,7 +47,25 @@ export default function SceneClient({ scene }: SceneClientProps) {
     router.prefetch("/");
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      const isAKey = event.key.toLowerCase() === "a" || event.code === "KeyA";
+      const key = event.key.toLowerCase();
+      const isAKey = key === "a" || event.code === "KeyA";
+
+      if (revealMode === "step") {
+        const isJKey = key === "j" || event.code === "KeyJ";
+        const isKKey = key === "k" || event.code === "KeyK";
+
+        if (isJKey) {
+          event.preventDefault();
+          setVisibleTextCount((current) => Math.min(3, current + 1));
+          return;
+        }
+
+        if (isKKey) {
+          event.preventDefault();
+          setVisibleTextCount((current) => Math.max(0, current - 1));
+          return;
+        }
+      }
 
       if (!isAKey) {
         return;
@@ -60,12 +84,13 @@ export default function SceneClient({ scene }: SceneClientProps) {
         clearTimeout(exitTimeoutRef.current);
       }
     };
-  }, [router, startExit]);
+  }, [revealMode, router, startExit]);
 
   return (
     <MonitorDisplay
       isExiting={isExiting}
       animationSetIndex={animationSetIndex}
+      visibleTextCount={visibleTextCount}
       monitors={[
         { mainText: scene.monitorOneMainText, secondaryText: scene.monitorOneSecondaryText },
         { mainText: scene.monitorTwoMainText, secondaryText: scene.monitorTwoSecondaryText },

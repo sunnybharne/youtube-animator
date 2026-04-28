@@ -1,7 +1,5 @@
 {
-  "id": "sometext",
   "label": "Some Text",
-  "subText": "Secondary display",
   "monitorOneMainText": "SCREEN 1",
   "monitorOneSecondaryText": "Primary output",
   "monitorTwoMainText": "SCREEN 2",

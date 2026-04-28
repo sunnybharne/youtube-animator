@@ -1,7 +1,5 @@
 {
-  "id": "monitors",
   "label": "Three Monitor Display",
-  "subText": "Triple screen setup",
   "monitorOneMainText": "MONITOR 1",
   "monitorOneSecondaryText": "Display 1 of 3",
   "monitorTwoMainText": "MONITOR 2",

@@ -51,6 +51,10 @@ export default function HomeClient({ scenes, homeContent }: HomeClientProps) {
   const router = useRouter();
   const [showOptions, setShowOptions] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(() => {
+    if (typeof window === "undefined") {
+      return null;
+    }
+
     const stored = window.sessionStorage.getItem(SELECTED_SCREEN_STORAGE_KEY);
     const isValid = scenes.some((s) => s.id === stored);
 
@@ -58,6 +62,10 @@ export default function HomeClient({ scenes, homeContent }: HomeClientProps) {
   });
 
   const [selectedWallpapers] = useState<string[]>(() => {
+    if (typeof window === "undefined") {
+      return pickUniqueWallpapers(3);
+    }
+
     try {
       const stored = window.sessionStorage.getItem(WALLPAPER_STORAGE_KEY);
 
@@ -130,7 +138,9 @@ export default function HomeClient({ scenes, homeContent }: HomeClientProps) {
           String(nextValue),
         );
 
-        router.push(`/scene/${selectedId}`);
+        const revealMode = event.shiftKey ? "step" : "all";
+
+        router.push(`/scene/${selectedId}?reveal=${revealMode}`);
         return;
       }
 
@@ -201,7 +211,9 @@ export default function HomeClient({ scenes, homeContent }: HomeClientProps) {
             <div className="w-full border-t border-white/15 pt-3 text-left text-xs uppercase tracking-[0.2em] text-white/75">
               <p>Shortcuts</p>
               <p className="mt-2">H: Show or hide options</p>
-              <p className="mt-1">A: Go to selected option</p>
+              <p className="mt-1">A: Go to scene (all text visible)</p>
+              <p className="mt-1">Shift + A: Go to scene (step reveal mode)</p>
+              <p className="mt-1">In step mode: J reveal next, K go back</p>
             </div>
           </div>
         ) : null}
