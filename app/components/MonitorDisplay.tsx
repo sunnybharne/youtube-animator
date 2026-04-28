@@ -14,51 +14,54 @@ const panelMotionClasses = [
 
 export default function MonitorDisplay() {
   return (
-    <div className="monitor-stage flex h-screen w-screen flex-row overflow-hidden bg-black">
-      {monitors.map((label, i) => (
-        <section
-          key={label}
-          className={`monitor-enter relative flex h-full w-1/3 items-center justify-center overflow-hidden bg-gradient-to-br ${panelGradients[i]} ${panelMotionClasses[i]}`}
-          style={{ animationDelay: `${i * 85}ms` }}
-        >
-          {/* subtle grid overlay */}
-          <div
-            className="pointer-events-none absolute inset-0 opacity-20"
-            style={{
-              backgroundImage:
-                "linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px)",
-              backgroundSize: "80px 80px",
-            }}
-          />
+    <div className="monitor-page relative h-screen w-screen overflow-hidden bg-slate-950">
+      <div className="monitor-background absolute inset-0" />
+      <div className="pointer-events-none absolute -left-40 top-[-18rem] h-[36rem] w-[36rem] rounded-full bg-cyan-500/20 blur-3xl" />
+      <div className="pointer-events-none absolute -right-36 bottom-[-16rem] h-[34rem] w-[34rem] rounded-full bg-fuchsia-500/20 blur-3xl" />
 
-          {/* glow blobs */}
-          <div className="pointer-events-none absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-white/20 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-48 -left-32 h-[600px] w-[600px] rounded-full bg-black/30 blur-3xl" />
+      <div className="monitor-stage relative z-10 flex h-full w-full items-center justify-center px-4 py-8 md:px-10">
+        <div className="grid w-full max-w-[1700px] grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
+          {monitors.map((label, i) => (
+            <section
+              key={label}
+              className={`monitor-enter relative flex min-h-[24rem] items-center justify-center overflow-hidden rounded-3xl border border-white/25 bg-gradient-to-br shadow-[0_26px_80px_rgba(0,0,0,0.55)] ${panelGradients[i]} ${panelMotionClasses[i]}`}
+              style={{ animationDelay: `${i * 90}ms` }}
+            >
+              {/* subtle grid overlay */}
+              <div
+                className="pointer-events-none absolute inset-0 opacity-20"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px)",
+                  backgroundSize: "64px 64px",
+                }}
+              />
 
-          {/* content */}
-          <div
-            className="monitor-content-enter relative z-10 flex flex-col items-center gap-8 text-center"
-            style={{ animationDelay: `${210 + i * 85}ms` }}
-          >
-            <span className="rounded-full border border-white/30 bg-white/10 px-6 py-2 text-sm font-medium uppercase tracking-[0.4em] text-white/80 backdrop-blur-md">
-              Display {i + 1} of 3
-            </span>
-            <h1 className="text-[10rem] font-black uppercase leading-none tracking-tight text-white drop-shadow-[0_8px_40px_rgba(0,0,0,0.5)]">
-              {label}
-            </h1>
-            <div className="h-1 w-48 rounded-full bg-white/70" />
-          </div>
+              {/* glow blobs */}
+              <div className="pointer-events-none absolute -top-24 -right-24 h-[18rem] w-[18rem] rounded-full bg-white/20 blur-3xl" />
+              <div className="pointer-events-none absolute -bottom-28 -left-20 h-[20rem] w-[20rem] rounded-full bg-black/35 blur-3xl" />
 
-          <p className="pointer-events-none absolute bottom-6 left-1/2 z-10 -translate-x-1/2 text-xs uppercase tracking-[0.3em] text-white/70">
-            Press A to go back
-          </p>
+              {/* content */}
+              <div
+                className="monitor-content-enter relative z-10 flex flex-col items-center gap-6 text-center"
+                style={{ animationDelay: `${220 + i * 90}ms` }}
+              >
+                <span className="rounded-full border border-white/30 bg-white/10 px-5 py-2 text-xs font-medium uppercase tracking-[0.3em] text-white/80 backdrop-blur-md">
+                  Display {i + 1} of 3
+                </span>
+                <h1 className="px-4 text-6xl font-black uppercase leading-none tracking-tight text-white drop-shadow-[0_8px_40px_rgba(0,0,0,0.45)] md:text-7xl">
+                  {label}
+                </h1>
+                <div className="h-1 w-36 rounded-full bg-white/70" />
+              </div>
+            </section>
+          ))}
+        </div>
 
-          {/* divider line between monitors */}
-          {i < monitors.length - 1 && (
-            <div className="absolute right-0 top-0 z-20 h-full w-px bg-white/20" />
-          )}
-        </section>
-      ))}
+        <p className="pointer-events-none absolute bottom-6 left-1/2 z-20 -translate-x-1/2 rounded-full border border-white/20 bg-black/30 px-4 py-2 text-xs uppercase tracking-[0.28em] text-white/80 backdrop-blur-md">
+          Press A to go back
+        </p>
+      </div>
     </div>
   );
 }

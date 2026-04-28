@@ -29,10 +29,10 @@ body {
   0% {
     opacity: 0;
     transform: translate3d(var(--monitor-enter-x, 0), var(--monitor-enter-y, 0), 0)
-      scale(0.94)
+      scale(0.9)
       rotateX(var(--monitor-enter-rx, 0deg))
       rotateY(var(--monitor-enter-ry, 0deg));
-    filter: blur(10px);
+    filter: blur(12px);
   }
   68% {
     opacity: 1;
@@ -68,7 +68,7 @@ body {
 
 .monitor-enter {
   animation-name: monitor-panel-enter;
-  animation-duration: 560ms;
+  animation-duration: 620ms;
   animation-fill-mode: both;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity, filter;
@@ -76,29 +76,29 @@ body {
 }
 
 .monitor-enter-left {
-  --monitor-enter-x: -115vw;
+  --monitor-enter-x: -80vw;
   --monitor-enter-y: 0px;
   --monitor-enter-rx: 0deg;
-  --monitor-enter-ry: 10deg;
+  --monitor-enter-ry: 14deg;
 }
 
 .monitor-enter-center {
   --monitor-enter-x: 0px;
-  --monitor-enter-y: -82vh;
-  --monitor-enter-rx: -9deg;
+  --monitor-enter-y: -72vh;
+  --monitor-enter-rx: -10deg;
   --monitor-enter-ry: 0deg;
 }
 
 .monitor-enter-right {
-  --monitor-enter-x: 115vw;
+  --monitor-enter-x: 80vw;
   --monitor-enter-y: 0px;
   --monitor-enter-rx: 0deg;
-  --monitor-enter-ry: -10deg;
+  --monitor-enter-ry: -14deg;
 }
 
 .monitor-content-enter {
   animation-name: monitor-content-enter;
-  animation-duration: 240ms;
+  animation-duration: 260ms;
   animation-fill-mode: both;
   animation-timing-function: cubic-bezier(0.2, 0.75, 0.25, 1);
   will-change: transform, opacity, filter;
@@ -107,6 +107,19 @@ body {
 .monitor-stage {
   perspective: 1400px;
   transform-style: preserve-3d;
+}
+
+.monitor-page {
+  background-image: radial-gradient(circle at 20% 18%, #0f1f2f 0%, #05070d 55%, #03040a 100%);
+}
+
+.monitor-background {
+  background-image:
+    linear-gradient(rgba(150, 180, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(150, 180, 255, 0.08) 1px, transparent 1px);
+  background-size: 78px 78px;
+  mask-image: radial-gradient(circle at center, black 32%, transparent 100%);
+  opacity: 0.58;
 }
 
 @media (prefers-reduced-motion: reduce) {
