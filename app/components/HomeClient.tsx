@@ -2,10 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import type { HomeContent } from "../lib/homeContent";
 import type { Scene } from "../lib/scenes";
 
 const WALLPAPER_STORAGE_KEY = "home:selected-wallpapers:v1";
 const SELECTED_SCREEN_STORAGE_KEY = "home:selected-screen:v1";
+const ANIMATION_SEQUENCE_STORAGE_KEY = "scene:monitor-animation-sequence:v1";
 
 const wallpapers = [
   "/homewallpapers/ChatGPT Image Mar 29, 2025 at 11_25_33 PM.png",
@@ -42,9 +44,10 @@ function pickUniqueWallpapers(count: number) {
 
 type HomeClientProps = {
   scenes: Scene[];
+  homeContent: HomeContent;
 };
 
-export default function HomeClient({ scenes }: HomeClientProps) {
+export default function HomeClient({ scenes, homeContent }: HomeClientProps) {
   const router = useRouter();
   const [showOptions, setShowOptions] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(() => {
@@ -116,6 +119,17 @@ export default function HomeClient({ scenes }: HomeClientProps) {
         }
 
         event.preventDefault();
+
+        // Advance animation sequence once per deliberate scene entry.
+        const rawValue = window.sessionStorage.getItem(ANIMATION_SEQUENCE_STORAGE_KEY);
+        const parsed = rawValue ? Number.parseInt(rawValue, 10) : -1;
+        const nextValue = Number.isFinite(parsed) ? parsed + 1 : 0;
+
+        window.sessionStorage.setItem(
+          ANIMATION_SEQUENCE_STORAGE_KEY,
+          String(nextValue),
+        );
+
         router.push(`/scene/${selectedId}`);
         return;
       }
@@ -156,8 +170,12 @@ export default function HomeClient({ scenes }: HomeClientProps) {
 
       <div className="relative z-10 flex h-full w-full flex-col items-center justify-center gap-8 px-4 text-center md:px-8">
         <h1 className="subscribe-fancy text-center text-5xl font-black uppercase tracking-tight md:text-7xl">
-          SUBSCRIBE
+          {homeContent.mainText}
         </h1>
+
+        <p className="home-secondary-text max-w-2xl text-sm font-medium uppercase tracking-[0.2em] text-white/85 md:text-base">
+          {homeContent.secondaryText}
+        </p>
 
         {showOptions ? (
           <div className="flex flex-col items-center gap-4 rounded-2xl border border-white/20 bg-black/25 px-6 py-4 backdrop-blur-md">

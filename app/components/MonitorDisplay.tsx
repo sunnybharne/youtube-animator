@@ -46,12 +46,6 @@ const animationSets: readonly AnimationSet[] = [
     contentDelayStep: 58,
   },
   {
-    panelClasses: ["monitor-enter-right", "monitor-enter-bottom", "monitor-enter-left"],
-    panelDelayStep: 55,
-    contentDelayStart: 140,
-    contentDelayStep: 52,
-  },
-  {
     panelClasses: [
       "monitor-enter-side-skim-left",
       "monitor-enter-center-pop",
@@ -82,76 +76,24 @@ const animationSets: readonly AnimationSet[] = [
     contentDelayStep: 40,
   },
   {
-    panelClasses: ["monitor-enter-top", "monitor-enter-bottom", "monitor-enter-top"],
-    panelDelayStep: 50,
-    contentDelayStart: 130,
-    contentDelayStep: 44,
-  },
-  {
     panelClasses: [
-      "monitor-enter-left-wide",
-      "monitor-enter-center-pop",
-      "monitor-enter-right-wide",
+      "monitor-enter-top-left",
+      "monitor-enter-side-skim-right",
+      "monitor-enter-bottom",
     ],
-    panelDelayStep: 42,
-    contentDelayStart: 120,
-    contentDelayStep: 38,
-  },
-  {
-    panelClasses: ["monitor-enter-bottom", "monitor-enter-top-left", "monitor-enter-top-right"],
     panelDelayStep: 38,
     contentDelayStart: 105,
     contentDelayStep: 34,
   },
   {
     panelClasses: [
-      "monitor-enter-side-skim-left",
-      "monitor-enter-top",
-      "monitor-enter-bottom-right",
-    ],
-    panelDelayStep: 36,
-    contentDelayStart: 100,
-    contentDelayStep: 32,
-  },
-  {
-    panelClasses: [
-      "monitor-enter-bottom-left",
-      "monitor-enter-center-pop",
-      "monitor-enter-top-right",
-    ],
-    panelDelayStep: 34,
-    contentDelayStart: 95,
-    contentDelayStep: 30,
-  },
-  {
-    panelClasses: [
-      "monitor-enter-top-right",
-      "monitor-enter-bottom",
-      "monitor-enter-side-skim-left",
-    ],
-    panelDelayStep: 32,
-    contentDelayStart: 92,
-    contentDelayStep: 28,
-  },
-  {
-    panelClasses: [
       "monitor-enter-right-wide",
       "monitor-enter-top-left",
       "monitor-enter-bottom-left",
     ],
-    panelDelayStep: 30,
-    contentDelayStart: 88,
-    contentDelayStep: 26,
-  },
-  {
-    panelClasses: [
-      "monitor-enter-top-left",
-      "monitor-enter-side-skim-right",
-      "monitor-enter-bottom",
-    ],
-    panelDelayStep: 28,
-    contentDelayStart: 82,
-    contentDelayStep: 24,
+    panelDelayStep: 42,
+    contentDelayStart: 120,
+    contentDelayStep: 38,
   },
 ] as const;
 

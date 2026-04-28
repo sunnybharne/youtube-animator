@@ -2,9 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import MonitorDisplay, {
-  MONITOR_ANIMATION_SET_COUNT,
-} from "../../components/MonitorDisplay";
+import MonitorDisplay from "../../components/MonitorDisplay";
 import type { Scene } from "../../lib/scenes";
 
 type SceneClientProps = {
@@ -21,15 +19,8 @@ export default function SceneClient({ scene }: SceneClientProps) {
   const [animationSetIndex] = useState(() => {
     const rawValue = window.sessionStorage.getItem(ANIMATION_SEQUENCE_STORAGE_KEY);
     const parsed = rawValue ? Number.parseInt(rawValue, 10) : 0;
-    const safeCurrent = Number.isFinite(parsed)
-      ? ((parsed % MONITOR_ANIMATION_SET_COUNT) + MONITOR_ANIMATION_SET_COUNT) %
-        MONITOR_ANIMATION_SET_COUNT
-      : 0;
-    const next = (safeCurrent + 1) % MONITOR_ANIMATION_SET_COUNT;
 
-    window.sessionStorage.setItem(ANIMATION_SEQUENCE_STORAGE_KEY, String(next));
-
-    return safeCurrent;
+    return Number.isFinite(parsed) ? parsed : 0;
   });
 
   const navigateHome = useCallback(() => {
