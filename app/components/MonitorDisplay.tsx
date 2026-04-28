@@ -14,12 +14,12 @@ const panelMotionClasses = [
 
 export default function MonitorDisplay() {
   return (
-    <div className="flex h-screen w-screen flex-row overflow-hidden bg-black">
+    <div className="monitor-stage flex h-screen w-screen flex-row overflow-hidden bg-black">
       {monitors.map((label, i) => (
         <section
           key={label}
           className={`monitor-enter relative flex h-full w-1/3 items-center justify-center overflow-hidden bg-gradient-to-br ${panelGradients[i]} ${panelMotionClasses[i]}`}
-          style={{ animationDelay: `${i * 90}ms` }}
+          style={{ animationDelay: `${i * 85}ms` }}
         >
           {/* subtle grid overlay */}
           <div
@@ -38,7 +38,7 @@ export default function MonitorDisplay() {
           {/* content */}
           <div
             className="monitor-content-enter relative z-10 flex flex-col items-center gap-8 text-center"
-            style={{ animationDelay: `${140 + i * 90}ms` }}
+            style={{ animationDelay: `${210 + i * 85}ms` }}
           >
             <span className="rounded-full border border-white/30 bg-white/10 px-6 py-2 text-sm font-medium uppercase tracking-[0.4em] text-white/80 backdrop-blur-md">
               Display {i + 1} of 3
