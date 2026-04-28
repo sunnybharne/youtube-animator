@@ -138,6 +138,83 @@ body {
   --monitor-enter-ry: -14deg;
 }
 
+.monitor-enter-left-wide {
+  --monitor-enter-x: -96vw;
+  --monitor-enter-y: 0px;
+  --monitor-enter-rx: 0deg;
+  --monitor-enter-ry: 18deg;
+}
+
+.monitor-enter-right-wide {
+  --monitor-enter-x: 96vw;
+  --monitor-enter-y: 0px;
+  --monitor-enter-rx: 0deg;
+  --monitor-enter-ry: -18deg;
+}
+
+.monitor-enter-top {
+  --monitor-enter-x: 0px;
+  --monitor-enter-y: -95vh;
+  --monitor-enter-rx: -14deg;
+  --monitor-enter-ry: 0deg;
+}
+
+.monitor-enter-bottom {
+  --monitor-enter-x: 0px;
+  --monitor-enter-y: 95vh;
+  --monitor-enter-rx: 14deg;
+  --monitor-enter-ry: 0deg;
+}
+
+.monitor-enter-top-left {
+  --monitor-enter-x: -72vw;
+  --monitor-enter-y: -72vh;
+  --monitor-enter-rx: -10deg;
+  --monitor-enter-ry: 12deg;
+}
+
+.monitor-enter-top-right {
+  --monitor-enter-x: 72vw;
+  --monitor-enter-y: -72vh;
+  --monitor-enter-rx: -10deg;
+  --monitor-enter-ry: -12deg;
+}
+
+.monitor-enter-bottom-left {
+  --monitor-enter-x: -72vw;
+  --monitor-enter-y: 72vh;
+  --monitor-enter-rx: 10deg;
+  --monitor-enter-ry: 12deg;
+}
+
+.monitor-enter-bottom-right {
+  --monitor-enter-x: 72vw;
+  --monitor-enter-y: 72vh;
+  --monitor-enter-rx: 10deg;
+  --monitor-enter-ry: -12deg;
+}
+
+.monitor-enter-side-skim-left {
+  --monitor-enter-x: -110vw;
+  --monitor-enter-y: 10vh;
+  --monitor-enter-rx: 4deg;
+  --monitor-enter-ry: 22deg;
+}
+
+.monitor-enter-side-skim-right {
+  --monitor-enter-x: 110vw;
+  --monitor-enter-y: 10vh;
+  --monitor-enter-rx: 4deg;
+  --monitor-enter-ry: -22deg;
+}
+
+.monitor-enter-center-pop {
+  --monitor-enter-x: 0px;
+  --monitor-enter-y: -52vh;
+  --monitor-enter-rx: -18deg;
+  --monitor-enter-ry: 0deg;
+}
+
 .monitor-content-enter {
   animation-name: monitor-content-enter;
   animation-duration: 260ms;
