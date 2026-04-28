@@ -66,6 +66,81 @@ body {
   }
 }
 
+@keyframes monitor-panel-exit {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0) scale(0.96);
+    filter: blur(8px);
+  }
+}
+
+@keyframes monitor-content-exit {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(3px);
+  }
+}
+
+@keyframes home-wallpaper-enter {
+  0% {
+    opacity: 0;
+    transform: scale(1.08);
+    filter: blur(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes subscribe-gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes subscribe-glow-pulse {
+  0% {
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.22));
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 22px rgba(125, 211, 252, 0.42));
+    transform: translateY(-2px) scale(1.015);
+  }
+  100% {
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.22));
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes subscribe-shimmer-sweep {
+  0% {
+    background-position: 0% 50%, -140% 0%;
+  }
+  100% {
+    background-position: 100% 50%, 220% 0%;
+  }
+}
+
 .monitor-enter {
   animation-name: monitor-panel-enter;
   animation-duration: 620ms;
@@ -73,6 +148,14 @@ body {
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity, filter;
   transform-origin: center center;
+}
+
+.monitor-exit {
+  animation-name: monitor-panel-exit;
+  animation-duration: 220ms;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.4, 0.02, 1, 0.8);
+  will-change: transform, opacity, filter;
 }
 
 .monitor-enter-left {
@@ -104,6 +187,40 @@ body {
   will-change: transform, opacity, filter;
 }
 
+.monitor-content-exit {
+  animation-name: monitor-content-exit;
+  animation-duration: 180ms;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.4, 0.02, 1, 0.8);
+  will-change: transform, opacity, filter;
+}
+
+.home-wallpaper-enter {
+  animation-name: home-wallpaper-enter;
+  animation-duration: 360ms;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform, opacity, filter;
+}
+
+.subscribe-fancy {
+  background-image:
+    linear-gradient(120deg, #ffffff 0%, #8be9fd 30%, #f9a8d4 62%, #fef08a 100%),
+    linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.95) 50%, transparent 100%);
+  background-size: 220% 220%, 35% 100%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  letter-spacing: 0.04em;
+  animation:
+    subscribe-shimmer-sweep 2.8s linear infinite,
+    subscribe-gradient-shift 7s ease-in-out infinite,
+    subscribe-glow-pulse 2.2s ease-in-out infinite;
+  will-change: background-position, transform, filter;
+}
+
 .monitor-stage {
   perspective: 1400px;
   transform-style: preserve-3d;
@@ -124,7 +241,11 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .monitor-enter,
-  .monitor-content-enter {
+  .monitor-exit,
+  .monitor-content-enter,
+  .monitor-content-exit,
+  .home-wallpaper-enter,
+  .subscribe-fancy {
     animation: none;
   }
 }
