@@ -6,13 +6,20 @@ const panelGradients = [
   "from-amber-500 via-rose-600 to-pink-800",
 ] as const;
 
+const panelMotionClasses = [
+  "monitor-enter-left",
+  "monitor-enter-center",
+  "monitor-enter-right",
+] as const;
+
 export default function MonitorDisplay() {
   return (
     <div className="flex h-screen w-screen flex-row overflow-hidden bg-black">
       {monitors.map((label, i) => (
         <section
           key={label}
-          className={`relative flex h-full w-1/3 items-center justify-center overflow-hidden bg-gradient-to-br ${panelGradients[i]}`}
+          className={`monitor-enter relative flex h-full w-1/3 items-center justify-center overflow-hidden bg-gradient-to-br ${panelGradients[i]} ${panelMotionClasses[i]}`}
+          style={{ animationDelay: `${i * 160}ms` }}
         >
           {/* subtle grid overlay */}
           <div
@@ -29,7 +36,10 @@ export default function MonitorDisplay() {
           <div className="pointer-events-none absolute -bottom-48 -left-32 h-[600px] w-[600px] rounded-full bg-black/30 blur-3xl" />
 
           {/* content */}
-          <div className="relative z-10 flex flex-col items-center gap-8 text-center">
+          <div
+            className="monitor-content-enter relative z-10 flex flex-col items-center gap-8 text-center"
+            style={{ animationDelay: `${220 + i * 160}ms` }}
+          >
             <span className="rounded-full border border-white/30 bg-white/10 px-6 py-2 text-sm font-medium uppercase tracking-[0.4em] text-white/80 backdrop-blur-md">
               Display {i + 1} of 3
             </span>
@@ -38,6 +48,10 @@ export default function MonitorDisplay() {
             </h1>
             <div className="h-1 w-48 rounded-full bg-white/70" />
           </div>
+
+          <p className="pointer-events-none absolute bottom-6 left-1/2 z-10 -translate-x-1/2 text-xs uppercase tracking-[0.3em] text-white/70">
+            Press A to go back
+          </p>
 
           {/* divider line between monitors */}
           {i < monitors.length - 1 && (
