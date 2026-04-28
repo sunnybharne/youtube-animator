@@ -1,53 +1,18 @@
-"use client";
+import { notFound } from "next/navigation";
+import { getScenes } from "../../lib/scenes";
+import SceneClient from "./SceneClient";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
-import MonitorDisplay from "../../components/MonitorDisplay";
+export default async function ScenePage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const scene = getScenes().find((s) => s.id === id);
 
-export default function ScenePage() {
-  const router = useRouter();
-  const exitTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const isExitingRef = useRef(false);
-  const [isExiting, setIsExiting] = useState(false);
+  if (!scene) {
+    notFound();
+  }
 
-  const navigateHome = useCallback(() => {
-    router.push("/");
-  }, [router]);
-
-  const startExit = useCallback(() => {
-    if (isExitingRef.current) {
-      return;
-    }
-
-    isExitingRef.current = true;
-    setIsExiting(true);
-    exitTimeoutRef.current = setTimeout(navigateHome, 240);
-  }, [navigateHome]);
-
-  useEffect(() => {
-    router.prefetch("/");
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      const isAKey = event.key.toLowerCase() === "a" || event.code === "KeyA";
-
-      if (!isAKey) {
-        return;
-      }
-
-      event.preventDefault();
-      startExit();
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-
-      if (exitTimeoutRef.current) {
-        clearTimeout(exitTimeoutRef.current);
-      }
-    };
-  }, [router, startExit]);
-
-  return <MonitorDisplay isExiting={isExiting} />;
+  return <SceneClient scene={scene} />;
 }

@@ -1,5 +1,11 @@
 {
   "id": "sometext",
   "label": "Some Text",
-  "subText": "Secondary display"
+  "subText": "Secondary display",
+  "monitorOneMainText": "SCREEN 1",
+  "monitorOneSecondaryText": "Primary output",
+  "monitorTwoMainText": "SCREEN 2",
+  "monitorTwoSecondaryText": "Secondary output",
+  "monitorThreeMainText": "SCREEN 3",
+  "monitorThreeSecondaryText": "Tertiary output"
 }

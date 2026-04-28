@@ -1,4 +1,7 @@
-const monitors = ["MONITOR 1", "MONITOR 2", "MONITOR 3"] as const;
+type MonitorPanel = {
+  mainText: string;
+  secondaryText: string;
+};
 
 const panelGradients = [
   "from-fuchsia-600 via-purple-700 to-indigo-900",
@@ -14,9 +17,10 @@ const panelMotionClasses = [
 
 type MonitorDisplayProps = {
   isExiting?: boolean;
+  monitors: [MonitorPanel, MonitorPanel, MonitorPanel];
 };
 
-export default function MonitorDisplay({ isExiting = false }: MonitorDisplayProps) {
+export default function MonitorDisplay({ isExiting = false, monitors }: MonitorDisplayProps) {
   return (
     <div className="monitor-page relative h-screen w-screen overflow-hidden bg-slate-950">
       <div className="monitor-background absolute inset-0" />
@@ -25,13 +29,12 @@ export default function MonitorDisplay({ isExiting = false }: MonitorDisplayProp
 
       <div className="monitor-stage relative z-10 h-full w-full px-3 py-4 md:px-4 md:py-5">
         <div className="grid h-full w-full grid-cols-1 gap-3 md:grid-cols-3 md:gap-4">
-          {monitors.map((label, i) => (
+          {monitors.map((monitor, i) => (
             <section
-              key={label}
+              key={`${monitor.mainText}-${i}`}
               className={`${isExiting ? "monitor-exit" : "monitor-enter"} relative flex h-[28vh] items-center justify-center overflow-hidden rounded-3xl border border-white/25 bg-linear-to-br shadow-[0_26px_80px_rgba(0,0,0,0.55)] md:h-full ${panelGradients[i]} ${panelMotionClasses[i]}`}
               style={{ animationDelay: `${isExiting ? i * 40 : i * 90}ms` }}
             >
-              {/* subtle grid overlay */}
               <div
                 className="pointer-events-none absolute inset-0 opacity-20"
                 style={{
@@ -41,20 +44,25 @@ export default function MonitorDisplay({ isExiting = false }: MonitorDisplayProp
                 }}
               />
 
-              {/* glow blobs */}
               <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-white/20 blur-3xl" />
               <div className="pointer-events-none absolute -bottom-28 -left-20 h-80 w-80 rounded-full bg-black/35 blur-3xl" />
 
-              {/* content */}
               <div
                 className={`${isExiting ? "monitor-content-exit" : "monitor-content-enter"} relative z-10 flex flex-col items-center gap-6 text-center`}
                 style={{ animationDelay: `${isExiting ? i * 20 : 220 + i * 90}ms` }}
               >
-                <span className="rounded-full border border-white/30 bg-white/10 px-5 py-2 text-xs font-medium uppercase tracking-[0.3em] text-white/80 backdrop-blur-md">
-                  Display {i + 1} of 3
-                </span>
+                <div className="relative overflow-hidden rounded-md border border-cyan-200/45 bg-black/35 px-4 py-2 shadow-[0_0_30px_rgba(56,189,248,0.35)]">
+                  <div className="absolute inset-0 bg-linear-to-r from-cyan-400/20 via-transparent to-fuchsia-400/20" />
+                  <div className="relative flex items-center gap-2">
+                    <span className="inline-block h-2 w-2 rounded-full bg-cyan-300 animate-pulse" />
+                    <span className="text-[0.62rem] font-semibold uppercase tracking-[0.32em] text-cyan-100/95">
+                      {monitor.secondaryText}
+                    </span>
+                  </div>
+                </div>
+
                 <h1 className="px-4 text-6xl font-black uppercase leading-none tracking-tight text-white drop-shadow-[0_8px_40px_rgba(0,0,0,0.45)] md:text-7xl">
-                  {label}
+                  {monitor.mainText}
                 </h1>
                 <div className="h-1 w-36 rounded-full bg-white/70" />
               </div>

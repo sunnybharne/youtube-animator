@@ -5,6 +5,12 @@ export type Scene = {
   id: string;
   label: string;
   subText: string;
+  monitorOneMainText: string;
+  monitorOneSecondaryText: string;
+  monitorTwoMainText: string;
+  monitorTwoSecondaryText: string;
+  monitorThreeMainText: string;
+  monitorThreeSecondaryText: string;
 };
 
 export function getScenes(): Scene[] {

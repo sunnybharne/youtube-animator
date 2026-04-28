@@ -3,11 +3,6 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -105,42 +100,6 @@ body {
   }
 }
 
-@keyframes subscribe-gradient-shift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-@keyframes subscribe-glow-pulse {
-  0% {
-    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.22));
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    filter: drop-shadow(0 0 22px rgba(125, 211, 252, 0.42));
-    transform: translateY(-2px) scale(1.015);
-  }
-  100% {
-    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.22));
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes subscribe-shimmer-sweep {
-  0% {
-    background-position: 0% 50%, -140% 0%;
-  }
-  100% {
-    background-position: 100% 50%, 220% 0%;
-  }
-}
-
 .monitor-enter {
   animation-name: monitor-panel-enter;
   animation-duration: 620ms;
@@ -203,24 +162,6 @@ body {
   will-change: transform, opacity, filter;
 }
 
-.subscribe-fancy {
-  background-image:
-    linear-gradient(120deg, #ffffff 0%, #8be9fd 30%, #f9a8d4 62%, #fef08a 100%),
-    linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.95) 50%, transparent 100%);
-  background-size: 220% 220%, 35% 100%;
-  background-repeat: no-repeat;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  letter-spacing: 0.04em;
-  animation:
-    subscribe-shimmer-sweep 2.8s linear infinite,
-    subscribe-gradient-shift 7s ease-in-out infinite,
-    subscribe-glow-pulse 2.2s ease-in-out infinite;
-  will-change: background-position, transform, filter;
-}
-
 .monitor-stage {
   perspective: 1400px;
   transform-style: preserve-3d;
@@ -244,8 +185,7 @@ body {
   .monitor-exit,
   .monitor-content-enter,
   .monitor-content-exit,
-  .home-wallpaper-enter,
-  .subscribe-fancy {
+  .home-wallpaper-enter {
     animation: none;
   }
 }
