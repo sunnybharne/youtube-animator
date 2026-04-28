@@ -19,12 +19,12 @@ export default function MonitorDisplay() {
       <div className="pointer-events-none absolute -left-40 top-[-18rem] h-[36rem] w-[36rem] rounded-full bg-cyan-500/20 blur-3xl" />
       <div className="pointer-events-none absolute -right-36 bottom-[-16rem] h-[34rem] w-[34rem] rounded-full bg-fuchsia-500/20 blur-3xl" />
 
-      <div className="monitor-stage relative z-10 flex h-full w-full items-center justify-center px-4 py-8 md:px-10">
-        <div className="grid w-full max-w-[1700px] grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
+      <div className="monitor-stage relative z-10 h-full w-full px-3 py-4 md:px-4 md:py-5">
+        <div className="grid h-full w-full grid-cols-1 gap-3 md:grid-cols-3 md:gap-4">
           {monitors.map((label, i) => (
             <section
               key={label}
-              className={`monitor-enter relative flex min-h-[24rem] items-center justify-center overflow-hidden rounded-3xl border border-white/25 bg-gradient-to-br shadow-[0_26px_80px_rgba(0,0,0,0.55)] ${panelGradients[i]} ${panelMotionClasses[i]}`}
+              className={`monitor-enter relative flex h-[28vh] items-center justify-center overflow-hidden rounded-3xl border border-white/25 bg-gradient-to-br shadow-[0_26px_80px_rgba(0,0,0,0.55)] md:h-full ${panelGradients[i]} ${panelMotionClasses[i]}`}
               style={{ animationDelay: `${i * 90}ms` }}
             >
               {/* subtle grid overlay */}
