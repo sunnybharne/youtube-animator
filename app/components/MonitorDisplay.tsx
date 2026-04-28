@@ -19,7 +19,7 @@ export default function MonitorDisplay() {
         <section
           key={label}
           className={`monitor-enter relative flex h-full w-1/3 items-center justify-center overflow-hidden bg-gradient-to-br ${panelGradients[i]} ${panelMotionClasses[i]}`}
-          style={{ animationDelay: `${i * 160}ms` }}
+          style={{ animationDelay: `${i * 70}ms` }}
         >
           {/* subtle grid overlay */}
           <div
@@ -38,7 +38,7 @@ export default function MonitorDisplay() {
           {/* content */}
           <div
             className="monitor-content-enter relative z-10 flex flex-col items-center gap-8 text-center"
-            style={{ animationDelay: `${220 + i * 160}ms` }}
+            style={{ animationDelay: `${80 + i * 70}ms` }}
           >
             <span className="rounded-full border border-white/30 bg-white/10 px-6 py-2 text-sm font-medium uppercase tracking-[0.4em] text-white/80 backdrop-blur-md">
               Display {i + 1} of 3

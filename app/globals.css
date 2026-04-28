@@ -25,34 +25,33 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-@keyframes monitor-panel-enter-left {
+@keyframes monitor-panel-enter {
   0% {
     opacity: 0;
-    transform: translateX(-36%) scale(0.86);
-    filter: blur(18px);
+    transform: translate(var(--monitor-enter-x, 0), var(--monitor-enter-y, 0)) scale(0.96);
+    filter: blur(8px);
   }
-  65% {
+  78% {
     opacity: 1;
-    transform: translateX(4%) scale(1.02);
+    transform: translate(
+        calc(var(--monitor-enter-x, 0) * -0.06),
+        calc(var(--monitor-enter-y, 0) * -0.06)
+      )
+      scale(1.003);
     filter: blur(0);
   }
   100% {
     opacity: 1;
-    transform: translateX(0) scale(1);
+    transform: translate(0, 0) scale(1);
     filter: blur(0);
   }
 }
 
-@keyframes monitor-panel-enter-center {
+@keyframes monitor-content-enter {
   0% {
     opacity: 0;
-    transform: translateY(-22%) scale(0.92);
-    filter: blur(12px);
-  }
-  70% {
-    opacity: 1;
-    transform: translateY(2%) scale(1.01);
-    filter: blur(0);
+    transform: translateY(10px) scale(0.99);
+    filter: blur(5px);
   }
   100% {
     opacity: 1;
@@ -61,59 +60,32 @@ body {
   }
 }
 
-@keyframes monitor-panel-enter-right {
-  0% {
-    opacity: 0;
-    transform: translateX(36%) scale(0.86);
-    filter: blur(18px);
-  }
-  65% {
-    opacity: 1;
-    transform: translateX(-4%) scale(1.02);
-    filter: blur(0);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-    filter: blur(0);
-  }
-}
-
-@keyframes monitor-content-enter {
-  0% {
-    opacity: 0;
-    transform: translateY(16px);
-    filter: blur(8px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
-}
-
 .monitor-enter {
-  animation-duration: 860ms;
+  animation-name: monitor-panel-enter;
+  animation-duration: 360ms;
   animation-fill-mode: both;
-  animation-timing-function: cubic-bezier(0.18, 0.84, 0.3, 1);
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
   will-change: transform, opacity, filter;
 }
 
 .monitor-enter-left {
-  animation-name: monitor-panel-enter-left;
+  --monitor-enter-x: -84px;
+  --monitor-enter-y: 0px;
 }
 
 .monitor-enter-center {
-  animation-name: monitor-panel-enter-center;
+  --monitor-enter-x: 0px;
+  --monitor-enter-y: -58px;
 }
 
 .monitor-enter-right {
-  animation-name: monitor-panel-enter-right;
+  --monitor-enter-x: 84px;
+  --monitor-enter-y: 0px;
 }
 
 .monitor-content-enter {
   animation-name: monitor-content-enter;
-  animation-duration: 700ms;
+  animation-duration: 240ms;
   animation-fill-mode: both;
   animation-timing-function: ease-out;
   will-change: transform, opacity, filter;
