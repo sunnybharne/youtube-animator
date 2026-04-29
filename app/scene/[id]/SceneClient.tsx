@@ -92,9 +92,21 @@ export default function SceneClient({ scene, revealMode }: SceneClientProps) {
       animationSetIndex={animationSetIndex}
       visibleTextCount={visibleTextCount}
       monitors={[
-        { mainText: scene.monitorOneMainText, secondaryText: scene.monitorOneSecondaryText },
-        { mainText: scene.monitorTwoMainText, secondaryText: scene.monitorTwoSecondaryText },
-        { mainText: scene.monitorThreeMainText, secondaryText: scene.monitorThreeSecondaryText },
+        {
+          mainText: scene.monitorOneMainText,
+          secondaryText: scene.monitorOneSecondaryText,
+          backgroundURL: scene.monitorOneURL,
+        },
+        {
+          mainText: scene.monitorTwoMainText,
+          secondaryText: scene.monitorTwoSecondaryText,
+          backgroundURL: scene.monitorTwoURL,
+        },
+        {
+          mainText: scene.monitorThreeMainText,
+          secondaryText: scene.monitorThreeSecondaryText,
+          backgroundURL: scene.monitorThreeURL,
+        },
       ]}
     />
   );

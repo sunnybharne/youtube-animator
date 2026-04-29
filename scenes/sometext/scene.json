@@ -2,8 +2,11 @@
   "label": "Some Text",
   "monitorOneMainText": "SCREEN 1",
   "monitorOneSecondaryText": "Primary output",
+  "monitorOneURL": null,
   "monitorTwoMainText": "SCREEN 2",
   "monitorTwoSecondaryText": "Secondary output",
+  "monitorTwoURL": null,
   "monitorThreeMainText": "SCREEN 3",
-  "monitorThreeSecondaryText": "Tertiary output"
+  "monitorThreeSecondaryText": "Tertiary output",
+  "monitorThreeURL": null
 }

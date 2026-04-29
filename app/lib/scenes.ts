@@ -5,11 +5,14 @@ export type Scene = {
   id: string;
   label: string;
   monitorOneMainText: string;
-  monitorOneSecondaryText: string;
+  monitorOneSecondaryText: string | null;
+  monitorOneURL: string | null;
   monitorTwoMainText: string;
-  monitorTwoSecondaryText: string;
+  monitorTwoSecondaryText: string | null;
+  monitorTwoURL: string | null;
   monitorThreeMainText: string;
-  monitorThreeSecondaryText: string;
+  monitorThreeSecondaryText: string | null;
+  monitorThreeURL: string | null;
 };
 
 type SceneFileConfig = Omit<Scene, "id">;
@@ -24,11 +27,14 @@ function isValidSceneConfig(value: unknown): value is SceneFileConfig {
   return (
     typeof data.label === "string" &&
     typeof data.monitorOneMainText === "string" &&
-    typeof data.monitorOneSecondaryText === "string" &&
+    (typeof data.monitorOneSecondaryText === "string" || data.monitorOneSecondaryText === null) &&
+    (typeof data.monitorOneURL === "string" || data.monitorOneURL === null) &&
     typeof data.monitorTwoMainText === "string" &&
-    typeof data.monitorTwoSecondaryText === "string" &&
+    (typeof data.monitorTwoSecondaryText === "string" || data.monitorTwoSecondaryText === null) &&
+    (typeof data.monitorTwoURL === "string" || data.monitorTwoURL === null) &&
     typeof data.monitorThreeMainText === "string" &&
-    typeof data.monitorThreeSecondaryText === "string"
+    (typeof data.monitorThreeSecondaryText === "string" || data.monitorThreeSecondaryText === null) &&
+    (typeof data.monitorThreeURL === "string" || data.monitorThreeURL === null)
   );
 }
 

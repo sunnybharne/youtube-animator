@@ -1,7 +1,12 @@
 type MonitorPanel = {
   mainText: string;
-  secondaryText: string;
+  secondaryText: string | null;
+  backgroundURL: string | null;
 };
+
+function looksLikeImageURL(url: string) {
+  return /\.(png|jpe?g|gif|webp|avif|svg)(\?.*)?$/i.test(url) || /picsum\.photos/i.test(url);
+}
 
 type AnimationSet = {
   panelClasses: [string, string, string];
@@ -10,10 +15,44 @@ type AnimationSet = {
   contentDelayStep: number;
 };
 
+type TextRevealVariant = {
+  tagClassName: string;
+  titleClassName: string;
+  barClassName: string;
+};
+
 const panelGradients = [
   "from-fuchsia-600 via-purple-700 to-indigo-900",
   "from-cyan-500 via-sky-700 to-blue-900",
   "from-amber-500 via-rose-600 to-pink-800",
+] as const;
+
+const textRevealVariants: readonly TextRevealVariant[] = [
+  {
+    tagClassName: "text-reveal-tag",
+    titleClassName: "text-reveal-title",
+    barClassName: "text-reveal-bar",
+  },
+  {
+    tagClassName: "text-reveal-tag-alt",
+    titleClassName: "text-reveal-title-alt",
+    barClassName: "text-reveal-bar-alt",
+  },
+  {
+    tagClassName: "text-reveal-tag-flash",
+    titleClassName: "text-reveal-title-flash",
+    barClassName: "text-reveal-bar-flash",
+  },
+  {
+    tagClassName: "text-reveal-tag-swipe",
+    titleClassName: "text-reveal-title-swipe",
+    barClassName: "text-reveal-bar-swipe",
+  },
+  {
+    tagClassName: "text-reveal-tag-burst",
+    titleClassName: "text-reveal-title-burst",
+    barClassName: "text-reveal-bar-burst",
+  },
 ] as const;
 
 const animationSets: readonly AnimationSet[] = [
@@ -126,15 +165,34 @@ export default function MonitorDisplay({
         <div className="grid h-full w-full grid-cols-1 gap-3 md:grid-cols-3 md:gap-4">
           {monitors.map((monitor, i) => {
             const isTextVisible = i < visibleTextCount;
+            const hasURL =
+              typeof monitor.backgroundURL === "string" && monitor.backgroundURL.length > 0;
+            const hasImageBackground = hasURL && looksLikeImageURL(monitor.backgroundURL!);
+            const textRevealVariant =
+              textRevealVariants[
+                ((animationSetIndex * 7 + i * 3) % textRevealVariants.length +
+                  textRevealVariants.length) %
+                  textRevealVariants.length
+              ];
 
             return (
               <section
                 key={`${monitor.mainText}-${i}`}
-                className={`${isExiting ? "monitor-exit" : "monitor-enter"} relative flex h-[28vh] items-center justify-center overflow-hidden rounded-3xl border border-white/25 bg-linear-to-br shadow-[0_26px_80px_rgba(0,0,0,0.55)] md:h-full ${panelGradients[i]} ${selectedAnimationSet.panelClasses[i]}`}
+                className={`${isExiting ? "monitor-exit" : "monitor-enter"} relative flex h-[28vh] items-center justify-center overflow-hidden rounded-3xl border border-white/25 shadow-[0_26px_80px_rgba(0,0,0,0.55)] md:h-full ${hasImageBackground ? "bg-slate-900" : `bg-linear-to-br ${panelGradients[i]}`} ${selectedAnimationSet.panelClasses[i]}`}
                 style={{
                   animationDelay: `${isExiting ? i * 40 : i * selectedAnimationSet.panelDelayStep}ms`,
                 }}
               >
+                {hasImageBackground ? (
+                  <>
+                    <div
+                      className="pointer-events-none absolute inset-0 bg-cover bg-center"
+                      style={{ backgroundImage: `url('${encodeURI(monitor.backgroundURL!)}')` }}
+                    />
+                    <div className="pointer-events-none absolute inset-0 bg-black/35" />
+                  </>
+                ) : null}
+
                 <div
                   className="pointer-events-none absolute inset-0 opacity-20"
                   style={{
@@ -158,8 +216,10 @@ export default function MonitorDisplay({
                     }ms`,
                   }}
                 >
-                  {isTextVisible ? (
-                      <div className="text-reveal-tag relative overflow-hidden rounded-md border border-cyan-200/45 bg-black/35 px-4 py-2 shadow-[0_0_30px_rgba(56,189,248,0.35)]">
+                  {isTextVisible && monitor.secondaryText ? (
+                    <div
+                      className={`${textRevealVariant.tagClassName} relative overflow-hidden rounded-md border border-cyan-200/45 bg-black/35 px-4 py-2 shadow-[0_0_30px_rgba(56,189,248,0.35)]`}
+                    >
                       <div className="absolute inset-0 bg-linear-to-r from-cyan-400/20 via-transparent to-fuchsia-400/20" />
                       <div className="relative flex items-center gap-2">
                         <span className="inline-block h-2 w-2 rounded-full bg-cyan-300 animate-pulse" />
@@ -172,10 +232,38 @@ export default function MonitorDisplay({
 
                   {isTextVisible ? (
                     <>
-                      <h1 className="text-reveal-title px-4 text-6xl font-black uppercase leading-none tracking-tight text-white drop-shadow-[0_8px_40px_rgba(0,0,0,0.45)] md:text-7xl">
-                        {monitor.mainText}
-                      </h1>
-                      <div className="text-reveal-bar h-1 w-36 rounded-full bg-white/70" />
+                      <div className={textRevealVariant.titleClassName}>
+                        <h1 className="subscribe-fancy px-4 text-6xl font-black uppercase leading-none tracking-tight md:text-7xl">
+                          {monitor.mainText}
+                        </h1>
+                      </div>
+                      <div
+                        className={`${textRevealVariant.barClassName} h-1 w-36 rounded-full bg-white/70`}
+                      />
+
+                      {hasURL && !hasImageBackground ? (
+                        <div className="text-reveal-embed w-[92%] max-w-136 overflow-hidden rounded-xl border border-white/25 bg-black/40 shadow-[0_14px_36px_rgba(0,0,0,0.45)]">
+                          <iframe
+                            src={monitor.backgroundURL!}
+                            title={`${monitor.mainText} embedded site`}
+                            className="h-40 w-full bg-white md:h-48"
+                            loading="lazy"
+                            referrerPolicy="no-referrer"
+                            sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                          />
+
+                          <div className="flex items-center justify-end border-t border-white/10 bg-black/45 px-3 py-2">
+                            <a
+                              href={monitor.backgroundURL!}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-cyan-100/90"
+                            >
+                              Open URL
+                            </a>
+                          </div>
+                        </div>
+                      ) : null}
                     </>
                   ) : null}
                 </div>

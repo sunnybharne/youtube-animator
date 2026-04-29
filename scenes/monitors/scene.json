@@ -1,9 +1,12 @@
 {
   "label": "Three Monitor Display",
-  "monitorOneMainText": "MONITOR 1",
-  "monitorOneSecondaryText": "Display 1 of 3",
-  "monitorTwoMainText": "MONITOR 2",
-  "monitorTwoSecondaryText": "Display 2 of 3",
-  "monitorThreeMainText": "MONITOR 3",
-  "monitorThreeSecondaryText": "Display 3 of 3"
+  "monitorOneMainText": "Claude",
+  "monitorOneSecondaryText": null,
+  "monitorOneURL": "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWt2aHNpaXE3c2VibTJkeGVyeTFicGcwb3FseGlhcDNqNGQ3aXRmMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/yofjV4wkaQ0Kig5xig/giphy.gif",
+  "monitorTwoMainText": "vs",
+  "monitorTwoSecondaryText": null,
+  "monitorTwoURL": "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGVzb3p3M3ZscnpnYno2eGsxNmpveHMxY3VmMXJtOGg5dDJkNXdjaiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/VbPndoWTeusUyeR8mC/giphy.gif",
+  "monitorThreeMainText": "Open Source LLMs",
+  "monitorThreeSecondaryText": null,
+  "monitorThreeURL": "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHg2eTRkcjM4MmFtNXBmdmdtajljZGIxcjkwMjlqN3R4dWhyMnlvMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Sd8zKpVThbcuj86uLN/giphy.gif"
 }
