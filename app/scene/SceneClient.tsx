@@ -2,11 +2,11 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import MonitorDisplay from "../../components/MonitorDisplay";
-import type { Scene } from "../../lib/scenes";
+import MonitorDisplay from "../components/MonitorDisplay";
+import type { MonitorScene } from "../lib/monitor";
 
 type SceneClientProps = {
-  scene: Scene;
+  scene: MonitorScene;
   revealMode: "all" | "step";
 };
 
@@ -18,16 +18,20 @@ export default function SceneClient({ scene, revealMode }: SceneClientProps) {
   const isExitingRef = useRef(false);
   const [isExiting, setIsExiting] = useState(false);
   const [visibleTextCount, setVisibleTextCount] = useState(revealMode === "step" ? 0 : 3);
-  const [animationSetIndex] = useState(() => {
-    if (typeof window === "undefined") {
-      return 0;
-    }
+  // Deterministic SSR baseline; the stored sequence index is applied after mount
+  // so the server-rendered animation classes match what hydrates on the client.
+  const [animationSetIndex, setAnimationSetIndex] = useState(0);
 
+  useEffect(() => {
     const rawValue = window.sessionStorage.getItem(ANIMATION_SEQUENCE_STORAGE_KEY);
     const parsed = rawValue ? Number.parseInt(rawValue, 10) : 0;
 
-    return Number.isFinite(parsed) ? parsed : 0;
-  });
+    if (Number.isFinite(parsed)) {
+      // Bridges SSR baseline → client-only stored value; fires once on mount.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setAnimationSetIndex(parsed);
+    }
+  }, []);
 
   const navigateHome = useCallback(() => {
     router.push("/");

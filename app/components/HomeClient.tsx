@@ -3,10 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { HomeContent } from "../lib/homeContent";
-import type { Scene } from "../lib/scenes";
 
 const WALLPAPER_STORAGE_KEY = "home:selected-wallpapers:v1";
-const SELECTED_SCREEN_STORAGE_KEY = "home:selected-screen:v1";
 const ANIMATION_SEQUENCE_STORAGE_KEY = "scene:monitor-animation-sequence:v1";
 
 const wallpapers = [
@@ -43,28 +41,20 @@ function pickUniqueWallpapers(count: number) {
 }
 
 type HomeClientProps = {
-  scenes: Scene[];
   homeContent: HomeContent;
 };
 
-export default function HomeClient({ scenes, homeContent }: HomeClientProps) {
+export default function HomeClient({ homeContent }: HomeClientProps) {
   const router = useRouter();
-  const [showOptions, setShowOptions] = useState(false);
-  const [selectedId, setSelectedId] = useState<string | null>(() => {
-    if (typeof window === "undefined") {
-      return null;
-    }
 
-    const stored = window.sessionStorage.getItem(SELECTED_SCREEN_STORAGE_KEY);
-    const isValid = scenes.some((s) => s.id === stored);
+  // Deterministic baseline so the SSR HTML matches first-render hydration.
+  // The randomized / sessionStorage-backed selection is applied after mount.
+  const [selectedWallpapers, setSelectedWallpapers] = useState<string[]>(() =>
+    wallpapers.slice(0, 3),
+  );
 
-    return isValid ? stored : null;
-  });
-
-  const [selectedWallpapers] = useState<string[]>(() => {
-    if (typeof window === "undefined") {
-      return pickUniqueWallpapers(3);
-    }
+  useEffect(() => {
+    let next: string[] | null = null;
 
     try {
       const stored = window.sessionStorage.getItem(WALLPAPER_STORAGE_KEY);
@@ -77,76 +67,57 @@ export default function HomeClient({ scenes, homeContent }: HomeClientProps) {
           parsed.length > 0 &&
           parsed.every((item) => typeof item === "string")
         ) {
-          return parsed.slice(0, 3);
+          next = parsed.slice(0, 3);
         }
       }
     } catch {
       // Ignore malformed session storage data and pick fresh wallpapers.
     }
 
-    const nextSelection = pickUniqueWallpapers(3);
-
-    try {
-      window.sessionStorage.setItem(
-        WALLPAPER_STORAGE_KEY,
-        JSON.stringify(nextSelection),
-      );
-    } catch {
-      // Ignore storage write failures (e.g., private mode restrictions).
+    if (!next) {
+      next = pickUniqueWallpapers(3);
+      try {
+        window.sessionStorage.setItem(
+          WALLPAPER_STORAGE_KEY,
+          JSON.stringify(next),
+        );
+      } catch {
+        // Ignore storage write failures (e.g., private mode restrictions).
+      }
     }
 
-    return nextSelection;
-  });
-
-  // Persist selected scene id across navigations.
-  useEffect(() => {
-    if (!selectedId) {
-      window.sessionStorage.removeItem(SELECTED_SCREEN_STORAGE_KEY);
-      return;
-    }
-
-    window.sessionStorage.setItem(SELECTED_SCREEN_STORAGE_KEY, selectedId);
-  }, [selectedId]);
-
-  // Prefetch all scene routes eagerly.
-  useEffect(() => {
-    for (const scene of scenes) {
-      router.prefetch(`/scene/${scene.id}`);
-    }
-  }, [router, scenes]);
+    // Bridges SSR baseline → client-only randomized/stored value. The setState
+    // here is intentional and fires once on mount.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSelectedWallpapers(next);
+  }, []);
 
   useEffect(() => {
+    router.prefetch("/scene");
+
     const handleKeyDown = (event: KeyboardEvent) => {
       const key = event.key.toLowerCase();
-      const isHKey = key === "h" || event.code === "KeyH";
       const isAKey = key === "a" || event.code === "KeyA";
 
-      if (isAKey) {
-        if (!selectedId) {
-          return;
-        }
-
-        event.preventDefault();
-
-        // Advance animation sequence once per deliberate scene entry.
-        const rawValue = window.sessionStorage.getItem(ANIMATION_SEQUENCE_STORAGE_KEY);
-        const parsed = rawValue ? Number.parseInt(rawValue, 10) : -1;
-        const nextValue = Number.isFinite(parsed) ? parsed + 1 : 0;
-
-        window.sessionStorage.setItem(
-          ANIMATION_SEQUENCE_STORAGE_KEY,
-          String(nextValue),
-        );
-
-        const revealMode = event.shiftKey ? "step" : "all";
-
-        router.push(`/scene/${selectedId}?reveal=${revealMode}`);
+      if (!isAKey) {
         return;
       }
 
-      if (isHKey) {
-        setShowOptions((current) => !current);
-      }
+      event.preventDefault();
+
+      // Advance animation sequence once per deliberate scene entry.
+      const rawValue = window.sessionStorage.getItem(ANIMATION_SEQUENCE_STORAGE_KEY);
+      const parsed = rawValue ? Number.parseInt(rawValue, 10) : -1;
+      const nextValue = Number.isFinite(parsed) ? parsed + 1 : 0;
+
+      window.sessionStorage.setItem(
+        ANIMATION_SEQUENCE_STORAGE_KEY,
+        String(nextValue),
+      );
+
+      const revealMode = event.shiftKey ? "step" : "all";
+
+      router.push(`/scene?reveal=${revealMode}`);
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -154,7 +125,7 @@ export default function HomeClient({ scenes, homeContent }: HomeClientProps) {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [router, selectedId]);
+  }, [router]);
 
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-slate-950 text-white">
@@ -186,37 +157,6 @@ export default function HomeClient({ scenes, homeContent }: HomeClientProps) {
         <p className="home-secondary-text max-w-2xl text-sm font-medium uppercase tracking-[0.2em] text-white/85 md:text-base">
           {homeContent.secondaryText}
         </p>
-
-        {showOptions ? (
-          <div className="flex flex-col items-center gap-4 rounded-2xl border border-white/20 bg-black/25 px-6 py-4 backdrop-blur-md">
-            <div className="flex flex-col items-center gap-3">
-              {scenes.map((scene) => (
-                <label
-                  key={scene.id}
-                  className="flex cursor-pointer items-center gap-3 text-sm font-medium uppercase tracking-[0.2em] text-white"
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedId === scene.id}
-                    onChange={(event) => {
-                      setSelectedId(event.target.checked ? scene.id : null);
-                    }}
-                    className="h-4 w-4 accent-white"
-                  />
-                  {scene.label}
-                </label>
-              ))}
-            </div>
-
-            <div className="w-full border-t border-white/15 pt-3 text-left text-xs uppercase tracking-[0.2em] text-white/75">
-              <p>Shortcuts</p>
-              <p className="mt-2">H: Show or hide options</p>
-              <p className="mt-1">A: Go to scene (all text visible)</p>
-              <p className="mt-1">Shift + A: Go to scene (step reveal mode)</p>
-              <p className="mt-1">In step mode: J reveal next, K go back</p>
-            </div>
-          </div>
-        ) : null}
       </div>
     </div>
   );
